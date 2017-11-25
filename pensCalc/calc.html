@@ -1,0 +1,781 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>מחשבון פנסיה</title>
+    <meta name="description" content="Use this free pension calculator to calculate commissions on your pension and education funds today.">
+    <!-- Place this render call where appropriate -->
+    <link rel="shortcut icon" href="src/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="format-detection" content="telephone=no">
+
+    <!-- design -->
+    <link href="src/import.css" rel="stylesheet">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="src/html5shiv.js"></script>
+    <script src="src/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="icon" type="image/png" href="/fav/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/fav/android-chrome-192x192.png" sizes="192x192">
+    <link rel="icon" type="image/png" href="/fav/favicon-96x96.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="/fav/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/fav/manifest.json">
+    <link rel="shortcut icon" href="/fav/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/fav/mstile-144x144.png">
+    <meta name="msapplication-config" content="/fav/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="application-name" content="Pension Calculator" />
+
+    <style>
+        .highcharts-tooltip span {
+        width:170px!important;
+        overflow:auto;
+        white-space:normal !important;
+        }
+
+    </style>
+    <!-- JS charts -->
+    <script src="src/jquery-1.11.2.min.js"></script>
+    <script src="src/highcharts.js"></script>
+
+</head>
+<BODY>
+<!--Begin Content section-->
+<section class="content-container">
+    <!-- CALC -->
+    <div id="calc" >
+
+            <!--Begin Content section-->
+            <section class="content-container" >
+                <section class="menu-area not-shown">
+                    <div class="wrapper">
+                        <div class="main-menu">
+                            <!-- <nav>
+                            <ul></ul>
+                            </nav> -->
+                        </div>
+                    </div>
+                </section>
+                <section class="content-area">
+                    <div class="wrapper">
+                        <div class="content-right main-block">
+                            <div class="calculation-container" >
+                                <div class="calculation-box" style="margin-top:100px; margin-bottom:100px">
+                                    <h2>
+                                        מחשבון הפנסיה
+                                    </h2>
+                                    <div class="cal-block">
+                                        </div>
+
+
+                                    <div>
+                                        <div id="area_chart" style="height:250px;"></div>
+
+     <script>
+
+
+    Number.prototype.formatMoney = function(c, d, t){
+    var n = this,
+        c = isNaN(c = Math.abs(c)) ? 2 : c,
+        d = d == undefined ? "." : d,
+        t = t == undefined ? "," : t,
+        s = n < 0 ? "-" : "",
+        i = parseInt(n = Math.abs(+n || 0).toFixed(c)) + "",
+        j = (j = i.length) > 3 ? j % 3 : 0;
+       return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+     };
+
+   Highcharts.Point.prototype.tooltipFormatter = function(e) {
+        var a = this, r = a.series;
+        return ['<span style="color:' + r.color + '">', a.name || r.name, "</span>: ", e ? "": "<b>x = " + (a.name || a.x) + ",</b> ", "<b>", e ? "": "y = ", "₪"+a.y.formatMoney(2), "</b><br>"].join("")
+    }
+
+    var chart = Highcharts.chart('area_chart', {
+       credits: {
+            enabled: false
+        },
+        chart: {
+            zoomType: "xy"
+        },
+        title: {
+            text: ""
+        },
+        legend: {
+            layout: "horizontal",
+            verticalAlign: "top",
+        },
+        xAxis: {
+            categories: ["2017","2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047"],
+             minTickInterval: 5
+        },
+        yAxis: [{
+            min: 0,
+            //max: 1460000,
+			//tickInterval: 52000,
+			minPadding: 0.5,
+			maxPadding: 0,
+            title: {
+                text: "עמלות",
+            }
+        }, {
+            min: 0,
+            //max: 2220000,
+			//tickInterval: 4000,
+			minPadding: 0.5,
+			maxPadding: 0,
+            title: {
+                text: "צבירה",
+            },
+            opposite: true
+        }
+        ],
+        tooltip: {
+            shared: !0,
+            useHTML:true
+        },
+        plotOptions: {
+            column: {
+                stacking: "normal"
+            }
+        },
+       /* series: [  {
+            id: "accum",
+            name: "Balance",
+            data: [247453.21077176,242946.85956598,238256.91265914,233375.8900791,228296.00710813,223009.16186706,217506.9223937,211780.51319467,205820.80124949,199618.28144431,193163.06141227,186444.84575624,179452.91962871,172176.13164277,164602.87608678,156721.07441451,148518.15598113,139981.03799432,131096.10464865,121849.18540973,112225.53241376,102209.79694622,91786.004962249,80937.531609777,69647.074714602,57896.627185247,45667.448293548,32940.03378516,19694.08477232,5908.47535926,1.0532377192618e-8],
+            type: "spline",
+            color: "#0D3548"
+        }]*/
+    });
+
+</script>
+
+                                    </div>
+                                    <br><br><br><br>
+
+                                        <div class="cal-content">
+                                            <!-- end left, beginning right -->
+                                            <div class="cal-left-box" >
+
+                                                <div class="rw-box">
+                                                    <div class="left-cell">
+                                                        <h3 id="monthlyIncome"></h3>
+                                                        שכר חודשי
+                                                    </div>
+                                                    <div class="right-cell">
+                                                        <h3 id="yearlyIncome"></h3>
+                                                        שכר שנתי
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="cal-right-box">
+                                                <div class="calcu-block">
+
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  display: table;">
+                                                        <div style="display: table-cell; vertical-align: middle;">
+                                                        <span class="symbol">₪</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="monthlyIncome" value="25000" size="10">
+                                                        <label class="left-cell" for="homeval"> :הכנסה חודשית</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  display: table;">
+                                                        <div style="display: table-cell; vertical-align: middle;">
+                                                            <span class="symbol">₪</span>
+                                                            <input readonly="readonly" type="text" step="any" TABINDEX="1" class="right-cell" name="pensionCap" value="19568" size="10">
+                                                            <label class="left-cell" for="homeval"> תקרת פנסיה</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  display: table;">
+                                                        <div style="display: table-cell; vertical-align: middle;">
+                                                            <span class="symbol">%</span>
+                                                            <input readonly="readonly" type="text" step="any" TABINDEX="1" class="right-cell" name="pensionRatio" value="20.333" size="10">
+                                                            <label class="left-cell" for="homeval"> הפרשה לפנסיה</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  display: table;">
+                                                        <div style="display: table-cell; vertical-align: middle;">
+                                                            <span class="symbol">%</span>
+                                                            <input  type="text" step="any" TABINDEX="1" class="right-cell" name="yearlyInterest" value="4.00" size="10">
+                                                            <label class="left-cell" for="homeval">
+ריבית שנתית
+                                                            </label>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                            <div class="cal-left-box" >
+
+                                            <div class="rw-box">
+                                                <div class="left-cell">
+                                                    <h3 id="pensionMonthlyCommission">May, 2047</h3>
+                                                    דמי ניהול הפקדה
+                                                </div>
+                                                <div class="right-cell">
+                                                    <h3 id="pensionAccumulatedCommission">$176,965.43</h3>
+
+                                                    דמי ניהול צבירה
+                                                </div>
+                                            </div>
+                                            </div>
+
+                                            <div div class="cal-right-box">
+                                                <div class="calcu-block" style="margin-top:5px">
+
+
+                                                    <div class="rw-box" style="background:#FCF3CF; text-align:center">
+                                                        <span  for="homeval"> <strong>קרן פנסיה</strong></span>
+
+                                                    </div>
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px; background:#FCF3CF">
+                                                        <span class="symbol">₪</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="p-acc" value="200000" size="10">
+                                                        <label class="left-cell" for="homeval"> :פנסיה צבורה</label>
+
+                                                    </div>
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px; background:#FCF3CF" >
+                                                        <span class="symbol">%</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="p-acc-ac" value="2" size="10">
+                                                        <label class="left-cell" for="homeval" style="padding:0 10px 0 10px"> :דמי ניהול צבירה</label>
+
+                                                    </div>
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  background:#FCF3CF">
+                                                        <span class="symbol">%</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="p-acc-mc" value="2" size="10">
+                                                        <label class="left-cell" for="homeval" style="padding:0 10px 0 10px"> :דמי ניהול הפקדה</label>
+
+                                                    </div>
+
+                                            </div>
+                                        </div>
+
+
+
+
+
+
+
+                                            <div class="cal-left-box" >
+
+                                                <div class="rw-box">
+                                                    <div class="left-cell">
+                                                        <h3 id="pensionCompleteMonthlyCommission">$312.50</h3>
+                                                        דמי ניהול הפקדה
+                                                    </div>
+                                                    <div class="right-cell">
+                                                        <h3 id="pensionCompleteAccumulatedCommission">$112,500.00</h3>
+                                                        דמי ניהול צבירה
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div div class="cal-right-box" style="margin-top:5px">
+                                                <div class="calcu-block">
+
+                                                    <div class="rw-box" style="background:#EAFAF1; text-align:center">
+                                                        <span  for="homeval"> <strong>
+(פנסיה משלימה צבורה (או ב.מנהלים
+                                                        </strong></span>
+
+                                                    </div>
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px; background:#EAFAF1">
+                                                        <span class="symbol">₪</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="p-accm" value="100000" size="10">
+                                                        <label class="left-cell" for="homeval"> :פנסיה צבורה</label>
+
+                                                    </div>
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px; background:#EAFAF1" >
+                                                        <span class="symbol">%</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="p-accm-ac" value="2" size="10">
+                                                        <label class="left-cell" for="homeval" style="padding:0 10px 0 10px"> :דמי ניהול צבירה</label>
+
+                                                    </div>
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  background:#EAFAF1">
+                                                        <span class="symbol">%</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="p-accm-mc" value="2" size="10">
+                                                        <label class="left-cell" for="homeval" style="padding:0 10px 0 10px"> :דמי ניהול הפקדה</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+
+
+                                            <div class="cal-left-box" >
+
+                                                <div class="rw-box">
+                                                    <div class="left-cell">
+                                                        <h3 id="educationMonthlyCommission">$312.50</h3>
+                                                        דמי ניהול הפקדה
+                                                    </div>
+                                                    <div class="right-cell">
+                                                        <h3 id="educationAccumulatedCommission">$112,500.00</h3>
+                                                        דמי ניהול צבירה
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+                                            <div div class="cal-right-box" style="margin-top:5px">
+                                                <div class="calcu-block">
+
+                                                    <div class="rw-box" style="background:#D4E6F1; text-align:center">
+                                                        <span  for="homeval"> <strong>
+קרן השתלמות
+                                                        </strong></span>
+
+                                                    </div>
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px; background:#D4E6F1">
+                                                        <span class="symbol">₪</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="edu" value="100000" size="10">
+                                                        <label class="left-cell" for="homeval"> קרן צבורה</label>
+
+                                                    </div>
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px; background:#D4E6F1" >
+                                                        <span class="symbol">%</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="edu-ac" value="2" size="10">
+                                                        <label class="left-cell" for="homeval" style="padding:0 10px 0 10px"> :דמי ניהול צבירה</label>
+
+                                                    </div>
+
+
+                                                    <div class="rw-box" style="padding:10px 0 10px 30px;  background:#D4E6F1">
+                                                        <span class="symbol">%</span>
+                                                        <input type="number" step="any" TABINDEX="1" class="right-cell" name="edu-am" value="2" size="10">
+                                                        <label class="left-cell" for="homeval" style="padding:0 10px 0 10px"> :דמי ניהול הפקדה</label>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+                                            <!--<div class="cal-left-box" >-->
+
+                                                <!--<div class="rw-box">-->
+<!--<div style="width:100%; text-align:center">-->
+
+    <!--<h2 style="margin:0px;">-->
+        <!--סך כל העמלות-->
+
+    <!--</h2>-->
+    <!--<h2 id="overallCommission">$19,072.46</h2>-->
+    <!--<span>-->
+
+<!--</div>-->
+                                                <!--</div>-->
+
+                                            <!--</div>-->
+
+                                            <div class="cal-left-box" >
+
+                                                <div class="rw-box">
+                                                    <div class="left-cell" style="width:60%">
+                                                        <h3 id="overallCommission">$312.50</h3>
+עמלות לשנה קרובה
+                                                    </div>
+                                                    <div class="right-cell">
+                                                        <h3 id="30Years">$112,500.00</h3>
+עמלות ל30 שנה
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+
+                                            <div div class="cal-right-box" style="margin-top:5px">
+                                                <div class="calcu-block">
+
+                                                    <div class="rw-box button">
+                                                        <button type="button"  TABINDEX="7"  value="Calculate" class="styled-button" onclick="calculate()" name="cal">!חשב</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                                </div>
+
+                                            <script>
+	$("#share_button").click(function(event) {
+		event.preventDefault();
+		$('#share_url').toggle('fast');
+	});
+	$('#share_url_input').click(function(){
+		$(this).select();
+	});
+</script>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- END OF CALC -->
+
+
+
+
+
+                        </div>
+                    </div>
+                </section>
+            </section>
+            <!--End Content section-->
+
+            <!--Begin Footer section-->
+            <footer class="footer-container">
+                <div class="wrapper">
+                    <div class="copyright">
+                        Disclaimer: Use this calculator at your own risk. Always advise with a registered and licensed professional before making any decisions in regards to your pension plans. 
+                        I take no responsibility for the numbers and calculations done using this calculator. 
+                        <br>   <br>                     &copy; 2017 Assaf Singer.
+
+                    </div>
+                </div>
+            </footer>
+            <!--End Footer section-->
+
+
+
+
+                        </ul>
+
+                        <br style="clear: both;" />
+                    </div>
+
+                    <script type="text/javascript">
+(function () {
+    function fixHeight() {
+        var height = document.querySelector('#explainer .tabs [id^="tab"]:checked + label').offsetHeight +
+                     document.querySelector('#explainer .tabs [id^="tab"]:checked ~ [id^="tab-content"]').offsetHeight;
+        document.getElementById('explainer').style.height = height + 30 + 'px';
+    }
+
+    fixHeight();
+    document.querySelectorAll('#explainer .tabs [id^="tab"]').forEach(function(tab) {
+        tab.addEventListener('change', function(e) {
+            fixHeight();
+        });
+    });
+})();
+</script>
+
+                </div>
+            </div>
+            <!--End Social section-->
+
+
+
+
+    <script type="text/javascript">
+        function getFormData(){
+            var data = {};
+            var cookieData = {};
+            var dataMap = {
+                "monthlyIncome" :"monthlyIncome",
+                "p-acc"         :"pensionAccumulated",
+                "p-acc-ac"      :"pensionAccumulatedCommission",
+                "p-acc-mc"      :"pensionMonthlyCommission",
+                "p-accm"        :"pensionCompleteAccumulated",
+                "p-accm-ac"     :"pensionCompleteAccumulatedCommission",
+                "p-accm-mc"     :"pensionCompleteMonthlyCommission",
+                "edu"           :"educationAccumulated",
+                "edu-ac"        :"educationAccumulatedCommission",
+                "edu-am"        :"educationMonthlyCommission",
+                "pensionRatio"  :"pensionRatio",
+                "yearlyInterest":"yearlyInterest",
+                "pensionCap"    :"pensionCap"
+            }
+            $.each(dataMap, function(index, element) {
+                try{
+                    data[element] = ($('input[name='+index+']')[0].value);
+                    cookieData[index] = ($('input[name='+index+']')[0].value);
+                } catch (e){}
+            });
+            encodedCoockieData = btoa(JSON.stringify(cookieData));
+            document.cookie = "calcFData="+encodedCoockieData;
+            return data;
+
+        }
+
+
+        function calculate(){
+            data = getFormData();
+            $("#monthlyIncome").text(formatMoney(data.monthlyIncome));
+            $("#yearlyIncome").text(formatMoney(12*data.monthlyIncome));
+            pensionMonthlyCommission = 12 * parseInt(data.pensionCap) * parseFloat(data.pensionRatio)/100 * data.pensionMonthlyCommission/100;
+            pensionAccumulatedCommission = (data.pensionAccumulatedCommission/100) * data.pensionAccumulated;
+            pensionCompleteMonthly = data.monthlyIncome-parseInt(data.pensionCap)>0?data.monthlyIncome-parseInt(data.pensionCap):0;
+            pensionCompleteMonthlyCommission = 12 * (pensionCompleteMonthly) * parseFloat(data.pensionRatio)/100 * data.pensionCompleteMonthlyCommission/100;
+            pensionCompleteAccumulatedCommission = (data.pensionCompleteAccumulatedCommission/100) * data.pensionCompleteAccumulated;
+            educationMonthlyCommission = 12 * data.monthlyIncome * 0.1 * data.educationMonthlyCommission/100;
+            educationAccumulatedCommission = (data.educationAccumulatedCommission/100) * data.educationAccumulated;
+
+            $("#pensionMonthlyCommission").text(formatMoney(pensionMonthlyCommission));
+            $("#pensionAccumulatedCommission").text(formatMoney(pensionAccumulatedCommission));
+            $("#pensionCompleteMonthlyCommission").text(formatMoney(pensionCompleteMonthlyCommission));
+            $("#pensionCompleteAccumulatedCommission").text(formatMoney(pensionCompleteAccumulatedCommission));
+            $("#educationMonthlyCommission").text(formatMoney(educationMonthlyCommission));
+            $("#educationAccumulatedCommission").text(formatMoney(educationAccumulatedCommission));
+
+            $("#overallCommission").text(formatMoney(pensionMonthlyCommission+pensionAccumulatedCommission+pensionCompleteMonthlyCommission+
+            pensionCompleteAccumulatedCommission+educationMonthlyCommission+educationAccumulatedCommission));
+
+            var simData = {};
+            simData.years = [];
+            simData.accumulatedOverallCost = []
+            simData.accumulatedOverallFunds = []
+            simData.accumulatedOverallDelta = []
+            simData.accumulatedPensionCost = []
+            simData.accumulatedPensionFunds = []
+            simData.accumulatedPensionDelta = []
+            simData.accumulatedPensionCompleteCost = []
+            simData.accumulatedPensionCompleteFunds = []
+            simData.accumulatedPensionCompleteDelta = []
+            simData.accumulatedEducationCost = []
+            simData.accumulatedEducationFunds = []
+            simData.accumulatedEducationDelta = []
+            simData.lastProcessedYear = new Date().getFullYear()-1;
+            simData.pensionAccumulated = parseFloat(data.pensionAccumulated);
+            simData.pensionCompleteAccumulated = parseFloat(data.pensionCompleteAccumulated);
+            simData.educationAccumulated = parseFloat(data.educationAccumulated);
+            simData.pensionYearlyAddition = 12 * parseInt(data.pensionCap) * parseFloat(data.pensionRatio)/100;
+            simData.pensionCompleteYearlyAddition = 12 * (pensionCompleteMonthly) * parseFloat(data.pensionRatio)/100;
+            simData.educationYearlyAddition = 12 * data.monthlyIncome * 0.1;
+            simData.pensionMonthlyCommission = parseFloat(data.pensionMonthlyCommission);
+            simData.pensionCompleteMonthlyCommission = parseFloat(data.pensionCompleteMonthlyCommission);
+            simData.educationMonthlyCommission = parseFloat(data.educationMonthlyCommission);
+            simData.pensionAccumulatedCommission = parseFloat(data.pensionAccumulatedCommission);
+            simData.pensionCompleteAccumulatedCommission = parseFloat(data.pensionCompleteAccumulatedCommission);
+            simData.educationAccumulatedCommission = parseFloat(data.educationAccumulatedCommission);
+            simData.pensionAccumulatedDelta = 0;
+            simData.pensionCompleteAccumulatedDelta = 0;
+            simData.educationAccumulatedDelta = 0;
+            simData.yearlyInterest = data.yearlyInterest;
+
+            var futureData = calculateFutureCost(30, simData);
+            updateChart(futureData);
+
+            var overallFutureCost = futureData.accumulatedOverallCost.reduce(function(acc, val) {
+  return acc + val;
+}, 0);
+            $("#30Years").text(formatMoney(overallFutureCost));
+
+
+        }
+
+        /*
+        data:
+            years: [2000, 2001, 2002, 2003]
+            accumulatedOverallCost: []
+            accumulatedOverallFunds: []
+            accumulatedOverallDelta: []
+            accumulatedPensionCost: []
+            accumulatedPensionFunds: []
+            accumulatedPensionDelta: []
+            accumulatedPensionCompleteCost: []
+            accumulatedPensionCompleteFunds: []
+            accumulatedPensionCompleteDelta: []
+            accumulatedEducationCost: []
+            accumulatedEducationFunds: []
+            accumulatedEducationDelta: []
+            lastProcessedYear;
+            usePension;
+            useComp;
+            useEdu;
+            monthlyIncome;
+            pensionAccumulated;
+            pensionYearlyAddition;
+            pensionMonthlyCommission;
+            pensionAccumulatedCommission
+            pensionAccumulatedDelta
+
+            pensionCompleteAccumulated;
+            pensionCompletedYearlyAddition
+            pensionCompleteMonthlyCommission
+            pensionCompleteAccumulatedCommission
+            pensionCompleteAccumulatedDelta
+
+            educationAccumulated;
+            educationYearlyEdition;
+            educationMonthlyCommission
+            educationAccumulatedCommission
+            educationAccumulatedDelta
+
+            yearlyInterest
+        */
+
+        function calculateFutureCost(numOfyears, data){
+            if (numOfyears == 0)
+                return data;
+
+            var currentYear = data.lastProcessedYear + 1;
+            data.lastProcessedYear = currentYear;
+            data.years.push(currentYear);
+
+            //assume conservative interest rate of 4% across the board
+
+            interest = parseFloat(data.yearlyInterest)/100;
+            //pension
+            pensionCommissionForYear = data.pensionYearlyAddition*data.pensionMonthlyCommission/100 + data.pensionAccumulated * data.pensionAccumulatedCommission/100
+            pensionBaseFundsAtYearStart = data.pensionAccumulated;
+            pensionAccumulatedDelta = (interest*pensionBaseFundsAtYearStart + data.pensionYearlyAddition-pensionCommissionForYear);
+            data.pensionAccumulatedDelta = pensionAccumulatedDelta;
+            data.pensionAccumulated = pensionBaseFundsAtYearStart + pensionAccumulatedDelta;
+
+           //pensionComplete
+            pensionCompleteCommissionForYear = data.pensionCompleteYearlyAddition*data.pensionCompleteMonthlyCommission/100 + data.pensionCompleteAccumulated * data.pensionCompleteAccumulatedCommission/100;
+            pensionCompleteBaseFundsAtYearStart = data.pensionCompleteAccumulated;
+            pensionCompleteAccumulatedDelta = (interest*pensionCompleteBaseFundsAtYearStart + data.pensionCompleteYearlyAddition-pensionCompleteCommissionForYear);
+            data.pensionCompleteAccumulatedDelta = pensionCompleteAccumulatedDelta;
+            data.pensionCompleteAccumulated = pensionCompleteBaseFundsAtYearStart + pensionCompleteAccumulatedDelta;
+
+           //education
+            educationCommissionForYear = data.educationYearlyAddition*data.educationMonthlyCommission/100 + data.educationAccumulated * data.educationAccumulatedCommission/100;
+            educationBaseFundsAtYearStart = data.educationAccumulated;
+            educationAccumulatedDelta = (interest*educationBaseFundsAtYearStart + data.educationYearlyAddition-educationCommissionForYear);
+            data.educationAccumulatedDelta = educationAccumulatedDelta;
+            data.educationAccumulated = educationBaseFundsAtYearStart + educationAccumulatedDelta;
+
+
+
+
+            data.accumulatedPensionCost.push(pensionCommissionForYear);
+            data.accumulatedPensionFunds.push(pensionBaseFundsAtYearStart);
+            data.accumulatedPensionDelta.push(pensionAccumulatedDelta);
+
+            data.accumulatedPensionCompleteCost.push(pensionCompleteCommissionForYear);
+            data.accumulatedPensionCompleteFunds.push(pensionCompleteBaseFundsAtYearStart);
+            data.accumulatedPensionCompleteDelta.push(pensionCompleteAccumulatedDelta);
+
+            data.accumulatedEducationCost.push(educationCommissionForYear);
+            data.accumulatedEducationFunds.push(educationBaseFundsAtYearStart);
+            data.accumulatedEducationDelta.push(educationAccumulatedDelta);
+
+            data.accumulatedOverallCost.push(pensionCommissionForYear+pensionCompleteCommissionForYear+educationCommissionForYear);
+            data.accumulatedOverallFunds.push(pensionBaseFundsAtYearStart+pensionCompleteBaseFundsAtYearStart+educationBaseFundsAtYearStart);
+            data.accumulatedOverallDelta.push(pensionAccumulatedDelta+pensionCompleteAccumulatedDelta+educationAccumulatedDelta);
+
+            return calculateFutureCost(numOfyears-1, data);
+        }
+
+      function updateChart(data){
+      console.log(data);
+
+      if(chart.get("accumulatedOverallFundsSeries"))
+        chart.get("accumulatedOverallFundsSeries").remove();
+      if(chart.get("accumulatedOverallDeltaSeries"))
+        chart.get("accumulatedOverallDeltaSeries").remove();
+      if(chart.get("accumulatedOverallCostSeries"))
+        chart.get("accumulatedOverallCostSeries").remove();
+
+
+       accumulatedOverallFundsSeries = {
+            id: "accumulatedOverallFundsSeries",
+            pointPadding: .02,
+            groupPadding: .02,
+            yAxis: 1,
+            name: "צבירה",
+            type: "column",
+            color: "#155776"
+        }
+
+        accumulatedOverallDeltaSeries = {
+            id: "accumulatedOverallDeltaSeries",
+            pointPadding: .02,
+            groupPadding: .02,
+            yAxis: 1,
+            name: "רווחים והפקדות נטו",
+            type: "column",
+            color: "#2085B5"
+        }
+
+        accumulatedOverallCostSeries = {
+            id:"accumulatedOverallCostSeries",
+            pointPadding: .02,
+            groupPadding: .02,
+            //yAxis: 1,
+            name: "עמלות",
+            type: "spline",
+            color: "#8ECAE8"
+        }
+
+        accumulatedOverallFundsSeries.data = data.accumulatedOverallFunds;
+        accumulatedOverallDeltaSeries.data = data.accumulatedOverallDelta;
+        accumulatedOverallCostSeries.data = data.accumulatedOverallCost;
+        chart.addSeries(accumulatedOverallDeltaSeries, false);
+        chart.addSeries(accumulatedOverallFundsSeries, false);
+        chart.addSeries(accumulatedOverallCostSeries, true);
+
+
+        }
+
+        function clearAllPoints(series){
+                for(var i = 0; i<series.points.length ; i++ ){
+                    series.removePoint(i, false);
+                }
+        }
+
+       function formatMoney(num){
+            var formatter = new Intl.NumberFormat('en-US', {
+              style: 'decimal',
+              minimumFractionDigits: 2,
+            });
+
+            return('₪'+formatter.format(num));
+        }
+
+        if (document.cookie.includes("calcFData=")){
+            cookieSavedData = JSON.parse(atob(/calcFData=([^;]+);/.exec(document.cookie)[1]));
+             $.each(cookieSavedData, function(index, element) {
+                try{
+                    ($('input[name='+index+']')[0].value=element);
+                } catch (e){}
+            });
+
+        }
+        calculate();
+    </script>
+
+
+</body>
+</html>
+
+

@@ -1,0 +1,36 @@
+<?php
+$fp = fopen('/home/assafs/request.log', 'a');
+$fp2 = fopen('/var/share/www/watts.txt' ,'w');
+$data = $_REQUEST['w'];
+if (!is_null($data)){
+	$parsedData = str_replace(",","\n",$data);
+	fwrite($fp, $parsedData . "\n");
+	fwrite($fp2, $parsedData . "\n");
+	$last = getLastLines($parsedData);
+	//send data
+        // Get cURL resource
+	$curl = curl_init();
+	// Set some options - we are passing in a useragent too here
+	curl_setopt_array($curl, array(
+  		    CURLOPT_RETURNTRANSFER => 1,
+		    CURLOPT_URL => 'http://api.thingspeak.com/update?key=TI828H1DL3NMQJRA&field1='.$last
+	));
+	// Send the request & save response to $resp
+	$resp = curl_exec($curl);
+	// Close request to clear up some resources
+	curl_close($curl);
+
+}
+fclose($fp);
+fclose($fp2);
+echo($_REQUEST['w']);
+
+function getLastLines($string, $n = 1) {
+    $lines = explode("\n", $string);
+
+    $lines = array_slice($lines, -$n);
+
+    return implode("\n", $lines);
+}
+?>
+~    

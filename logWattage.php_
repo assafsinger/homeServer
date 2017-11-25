@@ -1,0 +1,115 @@
+<?php
+date_default_timezone_set('UTC'); 
+
+$fp = fopen('/home/assafs/request.log', 'a');
+$fp2 = fopen('/var/share/www/watts.txt' ,'w');
+
+ob_start();
+var_dump($_REQUEST);
+$reqStr = ob_get_clean();
+//fwrite($fp,$reqStr."\n");
+$data = $_REQUEST['w'];
+$referrenceTime = $_REQUEST['rt'];
+$batteryLevel = $_REQUEST['bt'];
+                fwrite($fp, "battery:\t" . $batteryLevel . "\n");
+
+ //send data
+                // Get cURL resource
+                $curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => 'http://api.thingspeak.com/update?key=TI828H1DL3NMQJRA&field2='.$batteryLevel
+                )); 
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+
+
+//write to logstash
+
+                //send data to logstash
+                $sens_data=array(
+                        "dId" => 1,
+                        "type" => "EMON",
+                        "batteryLevel" => floatval($batteryLevel));
+                $data_string = json_encode($sens_data);
+
+                $curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_CUSTOMREQUEST => "POST",
+                    CURLOPT_POSTFIELDS => $data_string,
+                    CURLOPT_HTTPHEADER => array(
+                                          'Content-Type: application/json',
+                                          'Content-Length: ' . strlen($data_string)),
+                    CURLOPT_URL => 'http://18.216.107.149:8900'
+                ));
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+
+
+
+
+if (!is_null($data)){
+	sleep(20);
+	$parsedData = explode(",", $data);
+	$timestamp = time();
+	foreach($parsedData as $item) {
+		//203.11;23 ---- data;seconds ago
+		$parsedEntry = explode(";", $item);
+		$measurement = $parsedEntry[0];
+		$secondsAgo = $parsedEntry[1];
+		$time = date('Y-m-d\TH:i:s\z', $timestamp - ($referrenceTime/1000) + $secondsAgo);
+		fwrite($fp, $time . "\t" . $measurement . "\n");
+	
+	        //send data to thingspeak
+        	// Get cURL resource
+        	$curl = curl_init();
+     	   	// Set some options - we are passing in a useragent too here
+     	   	curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+                    CURLOPT_URL => 'http://api.thingspeak.com/update?key=TI828H1DL3NMQJRA&field1='.$measurement.'&created_at='.$time
+        	));
+        	// Send the request & save response to $resp
+        	$resp = curl_exec($curl);
+        	// Close request to clear up some resources
+        	curl_close($curl);
+
+		//send data to logstash
+		$sens_data=array(
+			"dId" => 1,
+			"type" => "EMON",
+			"wttage" => floatval($measurement),
+			"time" => $time);
+		$data_string = json_encode($sens_data);
+		
+		$curl = curl_init();
+                // Set some options - we are passing in a useragent too here
+                curl_setopt_array($curl, array(
+                    CURLOPT_RETURNTRANSFER => 1,
+		    CURLOPT_CUSTOMREQUEST => "POST",
+		    CURLOPT_POSTFIELDS => $data_string,
+		    CURLOPT_HTTPHEADER => array(                                                                          
+                                          'Content-Type: application/json',                                                                                
+                                          'Content-Length: ' . strlen($data_string)),
+                    CURLOPT_URL => 'http://18.216.107.149:8900'
+                ));
+                // Send the request & save response to $resp
+                $resp = curl_exec($curl);
+                // Close request to clear up some resources
+                curl_close($curl);
+
+		sleep(20);
+	}
+}
+fclose($fp);
+fclose($fp2);
+//echo($_REQUEST['w']);
+
+?>
+~    

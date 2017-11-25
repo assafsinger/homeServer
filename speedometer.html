@@ -1,0 +1,42 @@
+<html>
+  <head>
+   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script type="text/javascript">
+      google.charts.load('current', {'packages':['gauge']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Label', 'Value'],
+          ['power', 1]
+        ]);
+
+        var options = {
+          width: 400, height: 120,
+          redFrom: 2500, redTo: 3000,
+          yellowFrom:1800, yellowTo: 2500,
+          minorTicks: 5,
+          max:3000
+        };
+
+        var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+
+        setInterval(function() {
+          $.get( "watts.txt", function( dataRec ) {
+	       dataarr = dataRec.split("\n");	
+               data.setValue(0, 1, Math.floor(parseFloat(dataarr[dataarr.length-2])));
+		chart.draw(data, options); 
+	  }); 
+        }, 5000);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="chart_div" style="width: 400px; height: 120px;"></div>
+  </body>
+</html>
+
